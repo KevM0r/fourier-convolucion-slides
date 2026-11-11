@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transformadas de Fourier y Convolución</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,600;1,700&family=Inter:wght@400;600&family=JetBrains+Mono&family=Poppins:wght@600;700&display=swap">
+<link rel="stylesheet" href="dist/reset.css">
+<link rel="stylesheet" href="dist/reveal.css">
+<link rel="stylesheet" href="dist/theme/black.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1 PORTADA -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h1>Transformadas de Fourier</h1>
+ <h3 style="color:#fff;font-size:1.05em">Análisis y aplicación en la convolución de señales discretas y continuas</h3>
+ <canvas id="wave" width="760" height="150"></canvas>
+ <p class="tagline fragment">¿Cómo convertir una integral difícil en una simple multiplicación?</p>
+</section>
+
+<!-- 2 CONVOLUCIÓN -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>La convolución</h2>
+ <div class="cols">
+  <div class="card fragment"><b class="a">Continua</b>$$y(t)=\int_{-\infty}^{\infty}x(\tau)\,h(t-\tau)\,d\tau$$</div>
+  <div class="card fragment"><b class="b">Discreta</b>$$y[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$$</div>
+ </div>
+ <canvas id="c2" width="900" height="240" class="fragment" style="margin-top:1.4em"></canvas>
+</section>
+
+<!-- 3 CONVOLUCIÓN EN ACCIÓN -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>Convolución en acción</h2>
+ <canvas id="c3" width="900" height="360"></canvas>
+ <div class="legend"><span><i style="background:#4cc9f0"></i>Señal de entrada fija</span><span><i style="background:#f72585"></i>Respuesta deslizándose</span><span><i style="background:#80ed99"></i>Área solapada (salida)</span></div>
+</section>
+
+<!-- 4 FOURIER -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>La Transformada de Fourier</h2>
+ <p>Descompone una señal en sus <span class="d">frecuencias</span>.</p>
+ <div class="cols">
+  <div class="card fragment"><b class="a">Continua (TF)</b>$$X(f)=\int_{-\infty}^{\infty}x(t)\,e^{-j2\pi f t}\,dt$$</div>
+  <div class="card fragment"><b class="b">Discreta (DFT)</b>$$X[k]=\sum_{n=0}^{N-1}x[n]\,e^{-j2\pi kn/N}$$</div>
+ </div>
+ <div class="flow fragment">
+  <div class="box" style="background:#4361ee">Dominio del tiempo<br><small>t en segundos (s)</small></div><div class="arrow">➜</div>
+  <div class="box" style="background:#2a9d8f">Dominio de la frecuencia<br><small>f en Hertz (Hz)</small></div>
+ </div>
+</section>
+
+<!-- 5 TEOREMA -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>El Teorema de la Convolución</h2>
+ <div class="theo fragment">
+  <div class="tcard" style="border-color:#4cc9f0"><div class="tag a">Convolución en el tiempo</div><div style="font-size:1.5em">$\color{#4cc9f0}{x(t)}\,\color{#ffd166}{*}\,\color{#f72585}{h(t)}$</div></div>
+  <div class="dbl">⟺</div>
+  <div class="tcard" style="border-color:#f72585"><div class="tag b">Multiplicación en frecuencia</div><div style="font-size:1.5em">$\color{#4cc9f0}{X(f)}\,\color{#80ed99}{\cdot}\,\color{#f72585}{H(f)}$</div></div>
+ </div>
+ <p class="dual fragment">y por dualidad…</p>
+ <div class="theo fragment">
+  <div class="tcard" style="border-color:#80ed99"><div class="tag c">Multiplicar en el tiempo</div><div style="font-size:1.5em">$x(t)\cdot h(t)$</div></div>
+  <div class="dbl">⟺</div>
+  <div class="tcard" style="border-color:#ffd166"><div class="tag d">Convolucionar en frecuencia</div><div style="font-size:1.5em">$X(f)*H(f)$</div></div>
+ </div>
+</section>
+
+<!-- 6 PROCEDIMIENTO -->
+<section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>Procedimiento de la convolución</h2>
+ <div class="flow" style="align-items:stretch;gap:.3em">
+  <div class="pbox fragment fade-right" style="border-color:#4361ee"><div class="pt a">1 · Transformar</div>
+   <span class="lab">Continuo</span>$x(t)\to X(f),\ h(t)\to H(f)$
+   <span class="lab">Discreto</span>$\mathbf X=\mathrm{DFT}\{\mathbf x\},\ \mathbf H=\mathrm{DFT}\{\mathbf h\}$</div>
+  <div class="arrow fragment" style="align-self:center">➜</div>
+  <div class="pbox fragment fade-right pulse" style="border-color:#f72585"><div class="pt b">2 · Multiplicar</div>
+   <span class="lab">Continuo</span>$Y(f)=X(f)\cdot H(f)$
+   <span class="lab">Discreto</span>$\mathbf Y=\mathbf X\odot\mathbf H$</div>
+  <div class="arrow fragment" style="align-self:center">➜</div>
+  <div class="pbox fragment fade-right" style="border-color:#2a9d8f"><div class="pt c">3 · Invertir</div>
+   <span class="lab">Continuo</span>$y(t)=\mathcal F^{-1}\{Y(f)\}$
+   <span class="lab">Discreto</span>$\mathbf y=\mathrm{IDFT}\{\mathbf Y\}$</div>
+ </div>
+ <div class="card fragment" style="border-color:var(--d);margin-top:.8em">
+  <b class="d" style="font-family:Poppins,sans-serif">⚠ ¡Cuidado con el zero-padding! <small>(tiempo discreto)</small></b>
+  <div class="cols" style="margin-top:.4em;text-align:left">
+   <div><b class="b">Circular</b>: la DFT de N puntos «enrolla» el resultado (aliasing temporal).</div>
+   <div><b class="c">Lineal</b>: es la convolución que queremos, de longitud $L_x+L_h-1$.</div>
+  </div>
+  <p style="margin:.5em 0 0"><b>Regla de oro:</b> rellenar con ceros ambas señales hasta $N\ge L_x+L_h-1$</p>
+ </div>
+</section>
+
+<!-- 8 EJEMPLO CONTINUO -->
+<section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo continuo · gráfico</h2>
+  <p>$x(t)=h(t)=2\,\mathrm{rect}(t/2)$ &nbsp;(amplitud $A=2$, duración $T=2$ s)</p>
+  <canvas id="c8" width="900" height="360"></canvas>
+  <p class="sub">Dos cuadradas convolucionadas dan un <b class="c">triángulo</b> de base $2T=4$ s y pico $A^2T=8$.</p>
+ </section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo continuo · resolución analítica (tiempo)</h2>
+  <p>El producto $x(\tau)h(t-\tau)=4$ solo donde se solapan; $y(t)=4\cdot(\text{longitud del solape})$:</p>
+  $$y(t)=\begin{cases}0 & t<-2\\ 4\,(t+2) & -2\le t\le 0\\ 4\,(2-t) & 0\le t\le 2\\ 0 & t>2\end{cases}$$
+  <p class="fragment">$$y(t)=4\,(2-|t|)=8\,\Lambda\!\left(\tfrac{t}{2}\right),\qquad y(0)=8$$</p>
+ </section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo continuo · vía Fourier</h2>
+  <canvas id="c8f" width="1000" height="230"></canvas>
+  <div class="cols" style="text-align:left">
+   <div class="fragment">$$X(f)=H(f)=2\cdot2\,\mathrm{sinc}(2f)=4\,\mathrm{sinc}(2f)$$</div>
+   <div class="fragment">$$Y(f)=X\cdot H=16\,\mathrm{sinc}^2(2f)$$</div>
+  </div>
+  <div class="fragment">$$y(t)=\mathcal{F}^{-1}\{16\,\mathrm{sinc}^2(2f)\}=8\,\Lambda\!\left(\tfrac{t}{2}\right)=4\,(2-|t|),\ |t|\le2$$</div>
+ </section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo continuo · notación</h2>
+  <div class="cols" style="flex-direction:column;gap:.7em;margin-top:.8em">
+   <div class="card">Función sinc:<br>$\mathrm{sinc}(u)=\dfrac{\sin(\pi u)}{\pi u}$</div>
+   <div class="card">Con $f_0\equiv 2f$:<br>$X=4\,\mathrm{sinc}(f_0)\qquad Y=16\,\mathrm{sinc}^2(f_0)$</div>
+   <div class="card">Par de transformadas (triángulo):<br>$\Lambda(t/T)\ \longleftrightarrow\ T\,\mathrm{sinc}^2(fT)$</div>
+  </div>
+ </section>
+</section>
+
+<!-- 9 EJEMPLO DISCRETO -->
+<section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo discreto · gráfico</h2>
+  <p>$x=[1,2,3]$ &nbsp;∗&nbsp; $h=[1,-1]$ &nbsp;⟹ $L_y=3+2-1=4$ &nbsp;(voltear → desplazar → multiplicar → sumar)</p>
+  <canvas id="c9" width="900" height="370"></canvas>
+ </section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo discreto · resolución analítica</h2>
+  <div class="cols" style="align-items:center">
+   <div style="text-align:left">$$\begin{aligned}
+   y[0]&=x[0]h[0]=1\\
+   y[1]&=x[0]h[1]+x[1]h[0]=-1+2=1\\
+   y[2]&=x[1]h[1]+x[2]h[0]=-2+3=1\\
+   y[3]&=x[2]h[1]=-3\end{aligned}$$</div>
+   <div class="card fragment" style="flex:.6"><span class="c" style="font-size:1.5em">y = [1, 1, 1, −3]</span><br>
+   <small>Comprobación: Σy = 0 = (Σx)(Σh) = 6·0</small></div>
+  </div>
+ </section>
+ <section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+  <h2>Ejemplo discreto · vía DFT</h2>
+  <p>Con $N=4\ge 4$: $x_p=[1,2,3,0]$, $h_p=[1,-1,0,0]$</p>
+  <table class="t">
+   <tr><th>k</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+   <tr><td class="a">X[k]</td><td>6</td><td>−2−2j</td><td>2</td><td>−2+2j</td></tr>
+   <tr><td class="b">H[k]</td><td>0</td><td>1+j</td><td>2</td><td>1−j</td></tr>
+   <tr class="fragment"><td class="c">Y=X·H</td><td>0</td><td>−4j</td><td>4</td><td>4j</td></tr>
+  </table>
+  <p class="fragment">$$y[n]=\tfrac14\sum_{k=0}^{3}Y[k]\,e^{j2\pi kn/4}\ \Rightarrow\ \mathbf{y}=[1,\,1,\,1,\,-3]\ \checkmark$$</p>
+  <p class="fragment sub">Sin zero-padding (N=3) el resultado sería circular: $[1-3,\,1,\,1]=[-2,1,1]$ ✗</p>
+ </section>
+</section>
+
+<!-- 10 APLICACIÓN -->
+<section class="dense" data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>Aplicación práctica: el eco es una convolución</h2>
+ <p>Un eco = la señal original + una copia retrasada y atenuada:</p>
+ <div class="card">$$y[n]=x[n]*h[n],\qquad h[n]=\delta[n]+0.6\,\delta[n-N_0]$$</div>
+ <canvas id="c10" width="900" height="200"></canvas>
+ <div class="cols" style="text-align:left">
+  <div class="card"><b class="a">x[n]</b> · la nota original</div>
+  <div class="card"><b class="b">h[n]</b> · el «cuarto»: eco al 60 % tras 0.15 s</div>
+  <div class="card"><b class="c">y[n]</b> · lo que se escucha</div>
+ </div>
+</section>
+
+<!-- 11 CONCLUSIONES -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <h2>Conclusiones</h2>
+ <ul>
+  <li class="fragment">Fourier simplifica el análisis de sistemas <span class="d">LTI</span>.</li>
+  <li class="fragment">La convolución se convierte en una <span class="b">multiplicación</span>: $Y=X\cdot H$.</li>
+  <li class="fragment">Es la base del procesamiento digital de señales gracias a la <span class="c">FFT</span>.</li>
+ </ul>
+</section>
+
+<!-- 12 GRACIAS -->
+<section data-background-gradient="linear-gradient(135deg,#03050c,#0a1126)">
+ <div class="doll-row">
+  <div class="doll-stage">
+   <div class="doll">
+    <div class="message"><div class="text">$\color{#4cc9f0}{x(t)}\,\color{#ffd166}{*}\,\color{#f72585}{h(t)}$</div></div>
+    <div class="head color">
+     <div class="eye eye-1"><div class="pupil-1"></div><div class="pupil-2"></div></div>
+     <div class="eye eye-2"><div class="pupil-1"></div><div class="pupil-2right"></div></div>
+    </div>
+    <div class="mouth"></div>
+    <div class="body color"></div>
+    <div class="arm1 color"></div>
+    <div class="arm2 color"></div>
+    <div class="leg1 color"></div>
+    <div class="leg2 color"></div>
+   </div>
+  </div>
+  <p class="tagline" style="font-size:2em">¡Gracias!</p>
+ </div>
+</section>
+
+</div></div>
+
+<script src="dist/reveal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script src="js/animaciones.js"></script>
+</body>
+</html>
